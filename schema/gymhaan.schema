@@ -1,0 +1,521 @@
+# gymhaan.schema
+# includes loads of useful and not so useful stuff
+# all damn comments made by @hbcke
+# all decisions are made upon best knowledge although this knowledge might change in the near future
+# I really hope we can get this to work!
+##
+## Copyright 2013 Gymhaan @hbcke @Stiebel
+## All rights reserved.
+##
+# gymhaan (RFC2798)
+# maybe it's not RFC but who carers? I'll let it there for reference ;)
+# For really good usage you should create groups named like
+# 0. gymhaan (GID 10000)
+# 1. student (GID 10001)
+# 2. instructor(GID 10002)
+# 3. staff (GID 10003)
+# 4. structural (GID 10004)
+# inside the ou=groups,dc=gymhaan,dc=local tree
+# when you do, be sure to give away gids (used for Ubuntu)
+# we used gids starting by 10000 (fairly high I know but it's safe (!) ;))
+# to setup these groups please apply the gymhaan_groups.ldif file to the ldap server
+#
+# now let's go and define the whole schema!
+#
+
+##
+# Generel Attributes for Students (1), Instructors (2), and Staff (3)
+##
+
+# add birthday (LOL was not included by default)
+attributetype ( 1.1.3.5.1
+        NAME 'birthday'
+        DESC 'Day of birth as YYYYMMDD'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27{8}
+        SINGLE-VALUE )
+
+# rfid Card stuff follows
+
+attributetype ( 1.1.3.5.2
+        NAME 'rfidCardNumber'
+        DESC 'rfid Card Number'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.3
+        NAME 'rfidCardStatus'
+        DESC 'rfid Card Status (0,1,2) (unused, enabeld, locked)'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27{1}
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.4
+        NAME 'rfidCardCreateTimeStamp'
+        DESC 'rfid card append / add timestamp'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.5
+        NAME 'rfidCardLastUsedTimestamp'
+        DESC 'rfid last used timestamp'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.6
+        NAME 'rfidCardExpireTimestamp'
+        DESC 'rfid Card Expire date'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.7
+        NAME 'rfidCardLastModifyAction'
+        DESC 'either modify / enabled / disabled etc.'
+        EQUALITY caseExactMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.8
+        NAME 'rfidCardLastModifyTimestamp'
+        DESC 'rfid card last modification date'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+# rfid Card Auth
+
+attributetype ( 1.1.3.5.9
+        NAME 'rfidCardAuthAllowed'
+        DESC 'allowed rooms, services etc. Seperated by a comma'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.10
+        NAME 'rfidCardAuthProhibited'
+        DESC 'prohibited rooms, services etc. Seperated by a comma'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+# SquidGuard goes here
+
+attributetype ( 1.1.3.5.11
+        NAME 'squidGuardStatus'
+        DESC 'Count squid abuses or disable (-1) the counter'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+# added photo location to handle jpegs without LDAP
+# single value not included = multiple photos allowed
+# but then only the timestamp of the last photo can be saved
+
+attributetype ( 1.1.3.5.12
+        NAME 'jpegPhotoTimestamp'
+        DESC 'jpeg Photo Timestamp'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.13
+        NAME 'jpegPhotoLocation'
+        DESC 'points to server address with photo'
+        EQUALITY caseExactMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.3.5.14
+        NAME 'jpegPhotoLocationTimestamp'
+        DESC 'jpeg Photo Location Timestamp'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+##
+# Account Specifications
+##
+
+# account Creation
+
+attributetype ( 1.1.3.5.15
+        NAME 'accountCreateTimestamp'
+        DESC 'registration Date'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.16
+        NAME 'accountCreatorUID'
+        DESC 'Account Creator UID / DN'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.17
+        NAME 'accountCreatorUIDNumber'
+        DESC 'Account Creator UID Number'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.18
+        NAME 'accountCreatorDisplayName'
+        DESC 'Account Creator Display Name'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+        SINGLE-VALUE )
+
+# account Expiration
+
+attributetype ( 1.1.3.5.19
+        NAME 'accountExpireTimestamp'
+        DESC 'registration Date'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.20
+        NAME 'accountLastModifyAction'
+        DESC 'Passwort Reset / RFID / Email Change etc.'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+# account Modification
+# no extra delete because object will be gone haha
+
+attributetype ( 1.1.3.5.21
+        NAME 'accountLastModifyTimestamp'
+        DESC 'registration Date'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.22
+        NAME 'accountLastModifierUID'
+        DESC 'Account Creator UID / DN'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.23
+        NAME 'accountLastModifierUIDNumber'
+        DESC 'Account Creator UID Number'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.24
+        NAME 'accountLastModifierDisplayName'
+        DESC 'Account Creator Display Name'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+        SINGLE-VALUE )
+
+# maybe we need quota for home dirs?
+
+attributetype ( 1.1.3.5.25
+        NAME 'homeDirectoryQuota'
+        DESC 'Specify the home directory size of the user in MB (Quota like)'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+# this is not the quota, it's the actual size
+# yeah I know it does not make any sense by now but who cares?!
+
+attributetype ( 1.1.3.5.26
+        NAME 'homeDirectorySize'
+        DESC 'The actual home directory size of the user in MB'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+##
+# Students (1) and Instructors (2) similarities
+##
+
+attributetype ( 1.1.3.5.27
+        NAME 'classes'
+        DESC 'Kurse der Schüler / Lehrer (InfEFStie DeuEFBorg InterAG) (space seperated)'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+##
+# Students Stuff (1)
+##
+
+
+# Klassenraum Nummer
+
+attributetype ( 1.1.3.5.28
+        NAME 'classRoomNumber'
+        SUP roomNumber )
+
+# contact to the parents!
+
+attributetype ( 1.1.3.5.29
+        NAME 'parentsDisplayName'
+        DESC 'Parents Email Addresses'
+        SUP displayName )
+
+attributetype ( 1.1.3.5.30
+        NAME 'parentsPostalAddress'
+        DESC 'Parents Street Name'
+        SUP postaladdress )
+
+attributetype ( 1.1.3.5.31
+        NAME 'parentsPostalCode'
+        DESC 'Parents Email Addresses'
+        SUP postalCode )
+
+attributetype ( 1.1.3.5.32
+        NAME 'parentsL'
+        DESC 'Parents Location (city)'
+        SUP l )
+
+attributetype ( 1.1.3.5.33
+        NAME 'parentsMail'
+        DESC 'Parents Email Addresses'
+        SUP mail )
+
+attributetype ( 1.1.3.5.34
+        NAME 'parentsPhone'
+        DESC 'Parents Home Phone Number'
+        SUP homePhone )
+
+attributetype ( 1.1.3.5.35
+        NAME 'parentsMobile'
+        DESC 'Parents Mobile Phone Number'
+        SUP mobile )
+
+# grade for the pupils to handle everything better
+
+attributetype ( 1.1.3.5.36
+        NAME 'grade'
+        DESC 'Pupils grade (5a, EF etc.)'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+# maybe we need also the class as a single value?
+# we don't know, so include it ;)
+
+attributetype ( 1.1.3.5.37
+        NAME 'class'
+        DESC 'Pupils grade (5a, EF etc.)'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+# Room Stuff here
+
+attributetype ( 1.1.3.5.38
+        NAME 'classRoomInstructorUID'
+        DESC 'UID / DN of the class room instructor'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.39
+        NAME 'classRoomInstructorUIDNumber'
+        DESC 'UID Number of the classRoom instructor'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.40
+        NAME 'classRoomInstructorDisplayName'
+        DESC 'class room instructor Display Name'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 
+        SINGLE-VALUE )
+
+# multiple options for the position are allowed
+
+##
+# Instructor's (2) Stuff here
+##
+
+attributetype ( 1.1.3.5.41
+        NAME 'position'
+        DESC 'Teacher / Trainee / Staff description (use Staff Object then and put position here)'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+##
+# gymhaanAuxiliary
+# maybe this stuff is useful for the Web UI
+# we need this stuff... maybe later ;)
+##
+
+attributetype ( 1.1.3.5.42
+        NAME 'lastLoginTimestamp'
+        DESC 'last login timestamp ;)'
+        EQUALITY generalizedTimeMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.43
+        NAME 'lastLoginService'
+        DESC 'Web / SLZ / R204 / R202 / InternetAG / (Cloud ?) etc.'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.44
+        NAME 'lastLoginIP'
+        DESC 'last login IP'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+        SINGLE-VALUE )
+
+attributetype ( 1.1.3.5.45
+        NAME 'lastLoginUserAgent'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.3.5.46
+        NAME 'lastLoginRoomNumber'
+        SUP roomNumber )
+
+# ============================
+##
+# The Real Objects follow now!
+##
+# ============================
+
+
+##
+# The average Gymhaan Student
+##
+objectclass ( 1.1.3.7.1
+    NAME 'gymhaanStudent'
+    DESC 'Gymhaan Student Account'
+    SUP inetOrgPerson
+    STRUCTURAL
+    MUST(
+        cn $ uid $ birthday )
+    MAY (
+        accountCreateTimestamp $ accountExpireTimestamp $ accountCreatorUID $ accountCreatorUIDNumber $ accountCreatorDisplayName $
+        accountLastModifyAction $ accountLastModifyTimestamp $
+        accountLastModifierUID $ accountLastModifierUIDNumber $
+        accountLastModifierDisplayName $
+        homeDirectoryQuota $ homeDirectorySize $
+        squidGuardStatus $
+        jpegPhotoTimestamp $ jpegPhotoLocation $ jpegPhotoLocationTimestamp $
+        rfidCardNumber $ rfidCardStatus $ rfidCardCreateTimestamp $ rfidCardLastUsedTimestamp $ rfidCardExpireTimestamp $
+        rfidCardLastModifyAction $ rfidCardLastModifyTimestamp $
+        rfidCardAuthAllowed $ rfidCardAuthProhibited $
+        grade $ class $ classes $
+        parentsDisplayName $ parentsPostalAddress $ parentsPostalCode $ parentsL $ parentsMail $ parentsPhone $ parentsMobile $
+        classRoomNumber $ classRoomInstructorUID $ classRoomInstructorUIDNumber $ classRoomInstructorDisplayName $
+        audio $ businessCategory $ carLicense $ departmentNumber $
+        displayName $ employeeNumber $ employeeType $ givenName $
+        homePhone $ homePostalAddress $ initials $ jpegPhoto $
+        labeledURI $ mail $ manager $ mobile $ o $ pager $
+        photo $ roomNumber $ secretary $ userCertificate $
+        x500uniqueIdentifier $ preferredLanguage $
+        userSMIMECertificate $ userPKCS12 )
+    )
+
+##
+# The average Gymhaan Instructor
+##
+objectclass     ( 1.1.3.7.2
+    NAME 'gymhaanInstructor'
+        DESC 'Gymhaan Instructor Account'
+    SUP inetOrgPerson
+    STRUCTURAL
+    MUST(
+        cn $ uid $ birthday )
+    MAY (
+        accountCreateTimestamp $ accountExpireTimestamp $ accountCreatorUID $ accountCreatorUIDNumber $ accountCreatorDisplayName $
+        accountLastModifyAction $ accountLastModifyTimestamp $
+        accountLastModifierUID $ accountLastModifierUIDNumber $
+        accountLastModifierDisplayName $
+        homeDirectoryQuota $ homeDirectorySize $
+        squidGuardStatus $
+        jpegPhotoTimestamp $ jpegPhotoLocation $ jpegPhotoLocationTimestamp $
+        rfidCardNumber $ rfidCardStatus $ rfidCardCreateTimestamp $ rfidCardLastUsedTimestamp $ rfidCardExpireTimestamp $
+        rfidCardLastModifyAction $ rfidCardLastModifyTimestamp $
+        rfidCardAuthAllowed $ rfidCardAuthProhibited $
+        classes $ position $
+        classRoomNumber $
+        birthday $ squidGuardStatus $ jpegPhotoLocation $
+        audio $ businessCategory $ carLicense $ departmentNumber $
+        displayName $ employeeNumber $ employeeType $ givenName $
+        homePhone $ homePostalAddress $ initials $ jpegPhoto $
+        labeledURI $ mail $ manager $ mobile $ o $ pager $
+        photo $ roomNumber $ secretary $ userCertificate $
+        x500uniqueIdentifier $ preferredLanguage $
+        userSMIMECertificate $ userPKCS12 )
+    )
+
+##
+# Gymhaan Staff Account
+##
+objectclass     ( 1.1.3.7.3
+    NAME 'gymhaanStaff'
+        DESC 'Gymhaan Staff Account'
+    SUP inetOrgPerson
+    STRUCTURAL
+    MUST(
+        cn $ uid $ birthday )
+    MAY (
+        accountCreateTimestamp $ accountExpireTimestamp $ accountCreatorUID $ accountCreatorUIDNumber $ accountCreatorDisplayName $
+        accountLastModifyAction $ accountLastModifyTimestamp $
+        accountLastModifierUID $ accountLastModifierUIDNumber $
+        accountLastModifierDisplayName $
+        homeDirectoryQuota $ homeDirectorySize $
+        squidGuardStatus $
+        jpegPhotoTimestamp $ jpegPhotoLocation $ jpegPhotoLocationTimestamp $
+        rfidCardNumber $ rfidCardStatus $ rfidCardCreateTimestamp $ rfidCardLastUsedTimestamp $ rfidCardExpireTimestamp $
+        rfidCardLastModifyAction $ rfidCardLastModifyTimestamp $
+        rfidCardAuthAllowed $ rfidCardAuthProhibited $
+        classes $ position $
+        classRoomNumber $
+        birthday $ squidGuardStatus $ jpegPhotoLocation $
+        audio $ businessCategory $ carLicense $ departmentNumber $
+        displayName $ employeeNumber $ employeeType $ givenName $
+        homePhone $ homePostalAddress $ initials $ jpegPhoto $
+        labeledURI $ mail $ manager $ mobile $ o $ pager $
+        photo $ roomNumber $ secretary $ userCertificate $
+        x500uniqueIdentifier $ preferredLanguage $
+        userSMIMECertificate $ userPKCS12 )
+    )
+
+##
+# Gymhaan Structural account
+# can be used in all the account above
+# might be needed in the web UI later
+##
+objectclass ( 1.1.3.7.4
+    NAME 'gymhaanAuxiliary'
+    DESC 'Gymhaan Auxiliary Object for Accounts'
+    AUXILIARY
+    MAY (
+        lastLoginTimestamp $ lastLoginService $ lastLoginIP $
+        lastLoginIP $ lastLoginRoomNumber )
+    )

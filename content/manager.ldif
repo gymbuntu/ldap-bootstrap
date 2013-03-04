@@ -1,0 +1,18 @@
+##
+# This file will specify some daemon and worker users like the manager
+##
+
+# Manager user.
+# this manager is used by the ltsp server (hopefully it is)
+# yeah be sure to change the password, obvious
+# you should create some 20 char password with tools like
+# http://www.gaijin.at/olspwgen.php
+# this user is like the admin user, but a secondary.
+# (it can be deleted (!) if necessary ) => yeah huge improvement
+
+dn: cn=manager,dc=gymhaan,dc=local
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: manager
+description: LDAP manager
+userPassword: gymbuntu

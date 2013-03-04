@@ -19,26 +19,26 @@ ou: groups
 dn: cn=gymhaan,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
 cn: gymhaan
-gidNumber: 10000
+gidNumber: 4200
 
 # now start with the object specific group stuff
 
 dn: cn=student,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
 cn: student
-gidNumber: 10001
+gidNumber: 4201
 
 dn: cn=instructor,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
 cn: instructor
-gidNumber: 10002
+gidNumber: 4202
 
 dn: cn=staff,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
 cn: staff
-gidNumber: 10003
+gidNumber: 4203
 
 dn: cn=structural,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
 cn: structural
-gidNumber: 10004
+gidNumber: 4204

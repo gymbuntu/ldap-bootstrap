@@ -7,8 +7,8 @@ sn: Stiebel
 givenName: Roland
 cn: rs
 displayName: Roland Stiebel
-uidNumber: 1101
-gidNumber: 10001
+uidNumber: 20001
+gidNumber: 4202
 userPassword: password
 gecos: Roland Stiebel
 loginShell: /bin/bash

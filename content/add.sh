@@ -43,8 +43,8 @@ fail () {
 ##
 
 add() {
-	[- e "$1" ] || fail "The ldif file you specified was not found.\nPlease make sure you specified a valid file name."
-	ldapadd -x -D $BIND_DN -W -f $1
+	[ -e "$1" ] || fail "The ldif file you specified was not found.\nPlease make sure you specified a valid file name."
+	ldapadd -x -D $BIND_DN -w $LDAP_PASSWORD -f $1
   success "Added $1"
 }
 

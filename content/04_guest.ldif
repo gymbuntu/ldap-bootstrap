@@ -1,0 +1,23 @@
+##
+# some default (guest) users for the students and the instructors
+##
+
+dn: uid=guest,ou=people,dc=gymhaan,dc=local
+objectClass: gymhaanStudent
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: guest
+sn: Guest Student
+givenName: Guest Student
+cn: Guest Student
+birthday: 19940212
+displayName: Student
+uidNumber: 2004
+gidNumber: 4201
+userPassword: gymhaan
+gecos: Crow
+loginShell: /bin/bash
+homeDirectory: /home/students/guest
+shadowExpire: -1
+o: gymhaan
+title: Gymhaan Student Guest Account

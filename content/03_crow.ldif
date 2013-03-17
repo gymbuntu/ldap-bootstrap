@@ -1,3 +1,9 @@
+##
+# some ldap user for testing and stuff
+##
+
+# and yes, we like guinness. Cheers.
+
 dn: uid=crow,ou=people,dc=gymhaan,dc=local
 objectClass: gymhaanStaff
 objectClass: posixAccount
@@ -8,19 +14,12 @@ givenName: Crow
 cn: Crow
 birthday: 19940212
 displayName: Crow
-uidNumber: 2001
-gidNumber: 4202
+uidNumber: 2003
+gidNumber: 4203
 userPassword: guinness
 gecos: Crow
 loginShell: /bin/bash
 homeDirectory: /home/crow
 shadowExpire: -1
-shadowFlag: 0
-shadowWarning: 7
-shadowMin: 8
-shadowMax: 999999
-shadowLastChange: 10877
-mail: crow@gymhaan.de
 o: gymhaan
-title: Crow Test Account
-initials: cf
+title: Gymhaan Crow Test Account

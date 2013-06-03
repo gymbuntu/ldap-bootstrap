@@ -15,4 +15,4 @@ objectClass: simpleSecurityObject
 objectClass: organizationalRole
 cn: manager
 description: LDAP manager
-userPassword: ldappasswd
+userPassword: guinness

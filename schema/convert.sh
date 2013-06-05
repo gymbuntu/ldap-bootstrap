@@ -115,7 +115,8 @@ convert() {
 	fi
 
 	sudo slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 -H "ldap:///${SCHEMA_INDEX:4}" -l $SCHEMA_LDIF
-  success "Converted $(basename $1) to $(basename $SCHEMA_LDIF)"
+	sudo chown $USER:$USER $SCHEMA_LDIF
+	success "Converted $(basename $1) to $(basename $SCHEMA_LDIF)"
 }
 
 convert-all() {

@@ -81,7 +81,7 @@ add-schema() {
 
 schema-index() {
 	# get the schema index
-	SCHEMA_INDEX=$(sudo "slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 | grep \"$1,cn=schema,cn=config\"")
+	SCHEMA_INDEX=$(sudo sh -c "slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 | grep \"$1,cn=schema,cn=config\"")
 	echo "${SCHEMA_INDEX:4}"
 }
 
@@ -98,14 +98,13 @@ convert() {
 	#create the output directory
 	sudo mkdir $OUTPUT
 
-  #the schema basename ... (no extension)
+        #the schema basename ... (no extension)
 	SCHEMA="$(basename ${1%.*})"
 
 	# add the schema to the convert schema
 	add-schema $SCHEMA
 
-	# determine the schema index
-	SCHEMA_INDEX=$(sudo sh -c "slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 | grep \"$SCHEMA,cn=schema,cn=config\"")
+	SCHEMA_INDEX=$(schema-index $SCHEMA)
 
 	SCHEMA_LDIF="$BOOT/cn=$SCHEMA.ldif"
 	if [ -e $SCHEMA_LDIF ]
@@ -114,8 +113,17 @@ convert() {
 		success "Had to remove old ldif file $(basename $SCHEMA_LDIF)"
 	fi
 
-	sudo slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 -H "ldap:///${SCHEMA_INDEX:4}" -l $SCHEMA_LDIF
+	sudo slapcat -f $SCHEMA_CONVERT -F $OUTPUT -n0 -H "ldap:///$SCHEMA_INDEX" -l $SCHEMA_LDIF
 	sudo chown $USER:$USER $SCHEMA_LDIF
+
+	# fix the ldif file
+	# remove the schema index in the file
+	SCHEMA_SEARCH=${SCHEMA_INDEX%%,*}
+	sed -i "s/${SCHEMA_SEARCH:3}/$SCHEMA/g" $SCHEMA_LDIF
+	# remove the last 8 lines from the ldif file
+	head -n -8 $SCHEMA_LDIF > "/tmp/cn=$SCHEMA.ldif"
+	# overwrite the old ldif file
+	rm $SCHEMA_LDIF && cp "/tmp/cn=$SCHEMA.ldif" $SCHEMA_LDIF
 	success "Converted $(basename $1) to $(basename $SCHEMA_LDIF)"
 }
 

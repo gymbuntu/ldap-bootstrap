@@ -64,7 +64,7 @@ install() {
   success 'Installed slapd'
 
   # fail if no schema files are present
-  [ $(ls $BOOT/schema/*.ldif 2>/dev/null) ] || fail "No schema files in \".ldif\" format where found\nI\'m sure you want to add some schema files.\nBe sure to convert your \".schema\" files first to \".ldif\" using the schema/convert.sh {file} tool."
+  [ $(ls $BOOT/schema/*.ldif 2>/dev/null) ] || fail "No schema files in \".ldif\" format where found\nI\'m sure you want to add some schema files.\nBe sure to convert your \".schema\" files first to \".ldif\" using the schema/convert.sh {all|ldif file} tool."
 
   # add schema again
   info 'Adding schema files now ...'
@@ -82,8 +82,8 @@ install() {
 
   for file in $BOOT/content/*.ldif
   do
+      success "Adding $file ..."
       ldapadd -x -D $BIND_DN -w $LDAP_PASSWORD -f $file
-      success "Added $file"
   done
 }
 

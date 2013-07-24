@@ -50,11 +50,11 @@ add() {
 
 add-all() {
 	# check if ldif files are present
-	[ $(ls $BOOT/*.schema 2>/dev/null) ] || fail "No .ldif files where found.\nYou might want to place some files inside the \"content\" folder."
+	[ "$(ls $BOOT/*.ldif 2>/dev/null)" ] || fail "No .ldif files where found.\nYou might want to place some files inside the \"content\" folder."
 
 	info 'Adding ALL .ldif files ...'
 
-	for $file in "$BOOT/*.ldif"
+	for file in "$BOOT/*.ldif"
 	do
 		add $file
 	done
@@ -64,16 +64,10 @@ add-all() {
 # decide what to do :P
 ##
 
-case "$1" in
-  all)
-    add-all
-    ;;
-  ldif)
-    add $2
-    ;;
-  *)
-    # if no parameters are given print which are available
-    echo "Usage: $0 {all|ldif FILENAME}"
-    exit 1
-    ;;
-esac
+[ -n "$1" ] || add-all
+if [ -e "$1" ]
+then
+    add $1
+else
+    fail "The ldif file you specified was not found!."
+fi

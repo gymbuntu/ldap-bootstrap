@@ -128,8 +128,8 @@ convert() {
 }
 
 convert-all() {
-	# check if ldif files are present
-	[ $(ls $BOOT/*.schema 2>/dev/null) ] || fail "No .schema files where found.\nYou might want to place some files inside the \"schema\" folder."
+	# check if schema files are present
+	[ "$(ls $BOOT/*.schema 2>/dev/null)" ] || fail "No .schema files where found.\nYou might want to place some files inside the \"schema\" folder."
 
 	info 'Converting ALL .schema files ...'
 
@@ -143,18 +143,10 @@ convert-all() {
 # decide what to do :P
 ##
 
-case "$1" in
-  all)
-		convert-schema
-    convert-all
-    ;;
-  ldif)
-		convert-schema
-    convert $2
-    ;;
-  *)
-    # if no parameters are given print which are available
-    echo "Usage: $0 {all|ldif FILENAME}"
-    exit 1
-    ;;
-esac
+[ -n "$1" ] || convert-all
+if [ -e "$1" ]
+then
+    convert $1
+else
+    fail "The schema file you specified was not found!."
+fi

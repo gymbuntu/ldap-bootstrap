@@ -1,0 +1,14 @@
+##
+# first setup the basic groups
+##
+
+# start with the people's group
+# all objects will be place inside this tree
+dn: ou=people,dc=gymhaan,dc=local
+objectClass: organizationalUnit
+ou: people
+
+# all unix groups will be placed here
+dn: ou=groups,dc=gymhaan,dc=local
+objectClass: organizationalUnit
+ou: groups

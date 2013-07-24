@@ -1,0 +1,23 @@
+##
+# some default (guest) users for the students and the instructors
+##
+
+dn: uid=fh,ou=people,dc=gymhaan,dc=local
+objectClass: gymhaanStudent
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: fh
+sn: Florian Harbecke
+givenName: Florian Harbecke
+cn: Florian Harbecke
+birthday: 19940212
+displayName: FH
+uidNumber: 2005
+gidNumber: 4203
+userPassword: guinness
+gecos: Florian Harbecke
+loginShell: /bin/bash
+homeDirectory: /home/fh
+shadowExpire: -1
+o: gymhaan
+title: Florian Harbecke's Assistant Account

@@ -1,18 +1,5 @@
-# first setup the basic groups
-
-# start with the people's group
-# all objects will be place inside this tree
-dn: ou=people,dc=gymhaan,dc=local
-objectClass: organizationalUnit
-ou: people
-
-# all unix groups will be placed here
-dn: ou=groups,dc=gymhaan,dc=local
-objectClass: organizationalUnit
-ou: groups
-
-#
-## Now the Posix groups
+##
+# Now the Posix groups
 ##
 
 # first some basic gymhaan group yo
@@ -33,9 +20,9 @@ objectClass: posixGroup
 cn: instructor
 gidNumber: 4202
 
-dn: cn=staff,ou=groups,dc=gymhaan,dc=local
+dn: cn=chef,ou=groups,dc=gymhaan,dc=local
 objectClass: posixGroup
-cn: staff
+cn: chef
 gidNumber: 4203
 
 dn: cn=structural,ou=groups,dc=gymhaan,dc=local

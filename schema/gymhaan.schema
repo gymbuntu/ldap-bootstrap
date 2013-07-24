@@ -367,7 +367,7 @@ attributetype ( 1.1.3.5.41
 
 attributetype ( 1.1.3.5.42
         NAME 'position'
-        DESC 'Teacher / Trainee / Staff description (use Staff Object then and put position here)'
+        DESC 'Teacher / Trainee / Staff description (use Chef Object then and put position here)'
         EQUALITY caseIgnoreMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
@@ -486,11 +486,11 @@ objectclass     ( 1.1.3.7.2
     )
 
 ##
-# Gymhaan Staff Account
+# Gymhaan Chef Account
 ##
 objectclass     ( 1.1.3.7.3
-    NAME 'gymhaanStaff'
-        DESC 'Gymhaan Staff Account'
+    NAME 'gymhaanChef'
+        DESC 'Gymhaan Chef Account'
     SUP inetOrgPerson
     STRUCTURAL
     MUST(

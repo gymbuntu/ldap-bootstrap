@@ -1,1 +1,3 @@
 schema/*.ldif
+*.sublime-project
+*.sublime-workspace

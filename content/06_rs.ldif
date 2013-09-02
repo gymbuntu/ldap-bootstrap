@@ -1,0 +1,25 @@
+##
+# some default (guest) users for the students and the instructors
+##
+
+# Mr. Stiebel is 39, so he's young :)
+
+dn: uid=rs,ou=people,dc=gymhaan,dc=local
+objectClass: gymhaanStudent
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: rs
+sn: Roland Stiebel
+givenName: Roland Stiebel
+cn: Roland Stiebel
+birthday: 19740212
+displayName: RS
+uidNumber: 3003
+gidNumber: 4203
+userPassword: guinness
+gecos: Roland Stiebel
+loginShell: /bin/bash
+homeDirectory: /home/rs
+shadowExpire: -1
+o: gymhaan
+title: Roland Stiebel's Chef Account

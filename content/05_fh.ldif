@@ -20,4 +20,4 @@ loginShell: /bin/bash
 homeDirectory: /home/fh
 shadowExpire: -1
 o: gymhaan
-title: Florian Harbecke's Assistant Account
+title: Florian Harbecke's Chef Account

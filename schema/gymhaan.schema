@@ -1,23 +1,24 @@
 # gymhaan.schema
 # includes loads of useful and not so useful stuff
-# all damn comments made by @hbcke
+# all damn comments made by @fharbe
 # all decisions are made upon best knowledge although this knowledge might change in the near future
 # I really hope we can get this to work!
 ##
-## Copyright 2013 Gymhaan @hbcke @Stiebel
+## Copyright 2013 Gymhaan @fharbe @stiebel
 ## All rights reserved.
 ##
 # gymhaan (RFC2798)
 # maybe it's not RFC but who carers? I'll let it there for reference ;)
 # For really good usage you should create groups named like
-# 0. gymhaan (GID 10000)
-# 1. student (GID 10001)
-# 2. instructor(GID 10002)
-# 3. staff (GID 10003)
-# 4. structural (GID 10004)
+# 0. gymhaan (GID 4200)
+# 1. student (GID 4201)
+# 2. instructor(GID 4202)
+# 3. chef (GID 4203)
+# 4. structural (GID 4204)
+# which can also be found in /content/01_groups.ldif
 # inside the ou=groups,dc=gymhaan,dc=local tree
 # when you do, be sure to give away gids (used for Ubuntu)
-# we used gids starting by 10000 (fairly high I know but it's safe (!) ;))
+# we used gids starting by 4200 (fairly high I know but it's safe (!) ;))
 # to setup these groups please apply the gymhaan_groups.ldif file to the ldap server
 #
 # now let's go and define the whole schema!

@@ -86,6 +86,6 @@ To reinstall the whole server and reset all settings, simply use the `reconfigur
 
 ## Thanks
 
-Thanks to Roland Stiebel with whom I did this whole project. We hope this whole thing will help some people getting their ldap server up and running without strugglint too much with all the f***ed up console shit.
+Thanks to Roland Stiebel with whom I did this whole project. We hope this whole thing will help some people getting their ldap server up and running without struggling too much with all the f***ed up console shit.
 
 A project by @fharbe

@@ -100,7 +100,7 @@ convert() {
 
         #the schema basename ... (no extension)
 	SCHEMA="$(basename ${1%.*})"
-
+	convert-schema
 	# add the schema to the convert schema
 	add-schema $SCHEMA
 

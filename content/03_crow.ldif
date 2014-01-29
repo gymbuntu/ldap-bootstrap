@@ -5,7 +5,7 @@
 # and yes, we like guinness. Cheers.
 
 dn: uid=crow,ou=people,dc=gymhaan,dc=local
-objectClass: gymhaanStaff
+objectClass: gymhaanChef
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: crow

@@ -5,7 +5,7 @@
 # Mr. Stiebel is 39, so he's young :)
 
 dn: uid=rs,ou=people,dc=gymhaan,dc=local
-objectClass: gymhaanStudent
+objectClass: gymhaanChef
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: rs

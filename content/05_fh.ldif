@@ -3,7 +3,7 @@
 ##
 
 dn: uid=fh,ou=people,dc=gymhaan,dc=local
-objectClass: gymhaanStudent
+objectClass: gymhaanChef
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: fh
